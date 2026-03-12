@@ -39,7 +39,7 @@ jobs:
           target_setup_command: 'docker compose -f docker-compose.testbot.yml up -d'
           target_teardown_command: 'docker compose -f docker-compose.testbot.yml down -v'
           target_ready_check_command: 'curl -sf http://localhost:8055/server/health'
-          target_ready_check_timeout: '60'
+          target_ready_check_timeout: '300'
           auth_token_command: >
             curl -sf -X POST http://localhost:8055/auth/login
             -H 'Content-Type: application/json'
