@@ -48,11 +48,11 @@ router.patch(
 			throw new InvalidPayloadError({ reason: 'Cannot archive more than 500 items at once.' });
 		}
 
-		// Reject negative integer keys
-		const hasNegativeKey = keys.some((k) => typeof k === 'number' && k < 0);
+		// Reject null, negative integer, or non-string/number keys
+		const invalidKey = keys.find((k) => k === null || k === undefined || (typeof k === 'number' && k < 0));
 
-		if (hasNegativeKey) {
-			throw new InvalidPayloadError({ reason: "'keys' must not contain negative integers." });
+		if (invalidKey !== undefined) {
+			throw new InvalidPayloadError({ reason: "'keys' must only contain positive integers or non-empty strings." });
 		}
 
 		const service = new ItemsService(req.collection, {
