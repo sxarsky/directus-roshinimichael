@@ -41,4 +41,6 @@ test('testAddGet', async () => {
 
     // Generated Assertions
     expect(checkStatusCode(addGetResponse, "20x"), 'status code').toBeTruthy();
+    const body = JSON.parse(addGetResponse.responseBody as string) as { data: { result: number } };
+    expect(body?.data?.result, 'response body data.result').toBe(5);
 });
