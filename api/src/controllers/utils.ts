@@ -23,11 +23,12 @@ const CHARSETS: Record<string, string> = {
 	hex: '0123456789abcdef',
 };
 
-const randomStringSchema = Joi.object<{ length: number; charset: string }>({
+const randomStringSchema = Joi.object<{ length: number; charset: string; count: number }>({
 	length: Joi.number().integer().min(1).max(500).default(32),
 	charset: Joi.string()
 		.valid(...Object.keys(CHARSETS))
 		.default('alphanumeric'),
+	count: Joi.number().integer().min(1).max(100).default(1),
 });
 
 router.get(
@@ -41,7 +42,9 @@ router.get(
 
 		const generate = customAlphabet(CHARSETS[value.charset]!, value.length);
 
-		return res.json({ data: generate() });
+		const data = value.count === 1 ? generate() : Array.from({ length: value.count }, () => generate());
+
+		return res.json({ data });
 	}),
 );
 
